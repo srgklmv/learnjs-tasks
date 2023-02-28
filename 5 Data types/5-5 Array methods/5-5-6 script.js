@@ -28,19 +28,23 @@
 
 function Calculator() {
 
-  this.methods = [' + ', ' - '];
+  this.methods = {
+    '+': (a, b) => a + b,
+    '-': (a, b) => a - b,
+  };
 
   this.calculate = function(str) {
-    for (method of this.methods) {
-      if (str.includes(method)) {
-
+    let expression = str.split(' ');
+    for (let method in this.methods) {
+      if (expression.includes(method)) {
+        return this.methods[method](+expression.at(0), +expression.at(-1));
       }
     }
   };
 
   this.addMethod = function(name, func) {
-    this.name = func;
-  }
+    this.methods[name] = func;
+  };
 }
 
 let calc = new Calculator;
@@ -50,6 +54,5 @@ let powerCalc = new Calculator;
 powerCalc.addMethod("*", (a, b) => a * b);
 powerCalc.addMethod("/", (a, b) => a / b);
 powerCalc.addMethod("**", (a, b) => a ** b);
-
 let result = powerCalc.calculate("2 ** 3");
 console.log( result ); // 8
